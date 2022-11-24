@@ -1,10 +1,17 @@
 package modelo.dao.impl;
 
+import conexaojdbc.BdConexaoJDBC;
+import conexaojdbc.BdExcecao;
+
 import modelo.dao.VendedoresDao;
 import modelo.entidades.Departamentos;
 import modelo.entidades.Vendedores;
 
 import java.sql.Connection;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class VendedoresDaoJDBC implements VendedoresDao {
@@ -17,7 +24,30 @@ public class VendedoresDaoJDBC implements VendedoresDao {
 
     @Override
     public void inserir(Vendedores obj) {
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        PreparedStatement ps = null;
+        try{
+            ps = conexao.prepareStatement(
+                    "INSERT INTO Vendedores "
+                            +"(Nome, Email, Nascimento, Salario, DepartamentoId) "
+                            +"VALUES "
+                            +"(?,?,?,?,?)");
+            ps.setString(1, obj.getNome());
+            ps.setString(2, obj.getEmail());
+            ps.setDate(3, obj.getNascimento());
+            ps.setDouble(4, obj.getSalario());
+            ps.setInt(5, obj.getDepartamentos().getId());
 
+            int linha = ps.executeUpdate();
+            System.out.println("Total de linhas alteradas: " + linha);
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexao();
+        }
     }
 
     @Override
