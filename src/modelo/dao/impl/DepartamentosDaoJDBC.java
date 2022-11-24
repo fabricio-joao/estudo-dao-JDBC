@@ -1,9 +1,13 @@
 package modelo.dao.impl;
 
+import conexaojdbc.BdConexaoJDBC;
+import conexaojdbc.BdExcecao;
 import modelo.dao.DepartamentosDao;
 import modelo.entidades.Departamentos;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class DepartamentosDaoJDBC implements DepartamentosDao {
@@ -16,7 +20,27 @@ public class DepartamentosDaoJDBC implements DepartamentosDao {
 
     @Override
     public void inserir(Departamentos obj) {
+        PreparedStatement ps = null;
 
+        try{
+            ps = conexao.prepareStatement(
+                    "INSERT INTO Departamentos "
+                            +"(ID, Setor) "
+                            +"VALUES "
+                            +"(?,?)");
+            ps.setInt(1, obj.getId());
+            ps.setString(2, obj.getSetor());
+
+            int linha = ps.executeUpdate();
+            System.out.println("Total de linhas alterada(s): " + linha);
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexao();
+        }
     }
 
     @Override
