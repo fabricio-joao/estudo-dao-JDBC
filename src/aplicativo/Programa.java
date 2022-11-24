@@ -15,7 +15,7 @@ import java.util.List;
 public class Programa {
     public static void main(String[] args) throws ParseException {
 
-      /*  System.out.println("TESTE 1: INSERIR DEPARTAMENTOS");
+        /*System.out.println("TESTE 1: INSERIR DEPARTAMENTOS");
         DepartamentosDao depDao = FabricaDao.criarDepartamentoDao();
         Departamentos dep = new Departamentos(4, "Acessórios");
         depDao.inserir(dep);
@@ -49,17 +49,24 @@ public class Programa {
         /*System.out.println("TESTE 6: INSERIR VENDEDORES");
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         VendedoresDao vdao = FabricaDao.criarVendedoresDao();
-        Departamentos dep = new Departamentos(4, "Acessórios");
-        Vendedores vendedores = new Vendedores( null,"Pedro Luiz", "pl@gmail.com", new java.sql.Date(sdf.parse("19/05/2000").getTime()), 4500.0, dep);
+        Departamentos dep = new Departamentos(2, "Vestuario");
+        Vendedores vendedores = new Vendedores( null,"rita Moraes", "km@gmail.com", new java.sql.Date(sdf.parse("14/12/2007").getTime()), 2500.0, dep);
         vdao.inserir(vendedores);
         System.out.println(vendedores);*/
 
-        System.out.println("TESTE 7: ATUALIZAR VENDEDORES");
+        /*System.out.println("TESTE 7: ATUALIZAR VENDEDORES");
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         VendedoresDao vdao = FabricaDao.criarVendedoresDao();
         Departamentos dep = new Departamentos(1, "Calçado");
         Vendedores vendedores = new Vendedores( 5,"Gilson Martins", "gm@gmail.com", new java.sql.Date(sdf.parse("05/05/1999").getTime()), 1500.0, dep);
         vdao.atualizar(vendedores);
+        System.out.println(vendedores);*/
+
+        System.out.println("TESTE 7: DELETAR VENDEDORES");
+        VendedoresDao vdao = FabricaDao.criarVendedoresDao();
+        Vendedores vendedores = new Vendedores();
+        vendedores.setId(7);
+        vdao.deletar(vendedores);
         System.out.println(vendedores);
     }
 }

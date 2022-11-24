@@ -79,7 +79,24 @@ public class VendedoresDaoJDBC implements VendedoresDao {
 
     @Override
     public void deletar(Vendedores obj) {
+        PreparedStatement ps = null;
+        try{
+            ps = conexao.prepareStatement(
+                    "delete from Vendedores "
+                    +"where Id = ? ");
 
+            ps.setInt(1, obj.getId());
+
+            int linha = ps.executeUpdate();
+            System.out.println("Total de linhas alteradas: " + linha);
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexao();
+        }
     }
 
     @Override
