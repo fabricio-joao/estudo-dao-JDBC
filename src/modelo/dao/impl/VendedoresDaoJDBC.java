@@ -24,7 +24,6 @@ public class VendedoresDaoJDBC implements VendedoresDao {
 
     @Override
     public void inserir(Vendedores obj) {
-        SimpleDateFormat sdf = new SimpleDateFormat();
         PreparedStatement ps = null;
         try{
             ps = conexao.prepareStatement(
@@ -52,7 +51,30 @@ public class VendedoresDaoJDBC implements VendedoresDao {
 
     @Override
     public void atualizar(Vendedores obj) {
+        PreparedStatement ps = null;
+        try{
+            ps = conexao.prepareStatement(
+                    "update Vendedores "
+                            +"set Nome = ?, Email = ?, Nascimento = ?, Salario = ?, DepartamentoId = ? "
+                            +"where Id = ?	");
 
+            ps.setString(1, obj.getNome());
+            ps.setString(2, obj.getEmail());
+            ps.setDate(3, obj.getNascimento());
+            ps.setDouble(4, obj.getSalario());
+            ps.setInt(5, obj.getDepartamentos().getId());
+            ps.setInt(6, obj.getId());
+
+            int linha = ps.executeUpdate();
+            System.out.println("Total de linhas alteradas: " + linha);
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexao();
+        }
     }
 
     @Override
