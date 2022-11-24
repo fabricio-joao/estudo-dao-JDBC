@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DepartamentosDaoJDBC implements DepartamentosDao {
@@ -121,6 +122,31 @@ public class DepartamentosDaoJDBC implements DepartamentosDao {
 
     @Override
     public List<Departamentos> procurarPorTodosId() {
-        return null;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+             ps = conexao.prepareStatement(
+                "select * from Departamentos ");
+
+            rs = ps.executeQuery();
+
+            List<Departamentos> lista = new ArrayList<>();
+        while(rs.next()){
+            Departamentos departamentos = new Departamentos();
+            departamentos.setId(rs.getInt("Id"));
+            departamentos.setSetor(rs.getString("Setor"));
+            lista.add(departamentos);
+        }
+        return lista;
+    }
+        catch (SQLException e){
+        throw new BdExcecao(e.getMessage());
+    }
+        finally {
+        BdConexaoJDBC.fecharConexaoStatement(ps);
+        BdConexaoJDBC.fecharConexaoResultSet(rs);
+        BdConexaoJDBC.fecharConexao();
+    }
     }
 }
