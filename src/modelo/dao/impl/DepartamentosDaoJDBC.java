@@ -7,6 +7,7 @@ import modelo.entidades.Departamentos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -90,7 +91,32 @@ public class DepartamentosDaoJDBC implements DepartamentosDao {
 
     @Override
     public Departamentos procuraPorId(Integer id) {
-        return null;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try{
+            ps = conexao.prepareStatement(
+                    "select * from Departamentos "
+                            +"WHERE Id = ?");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+
+            if (rs.next()){
+                Departamentos departamentos = new Departamentos();
+                departamentos.setId(rs.getInt("Id"));
+                departamentos.setSetor(rs.getString("Setor"));
+                return departamentos;
+            }
+            return null;
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexaoResultSet(rs);
+            BdConexaoJDBC.fecharConexao();
+        }
     }
 
     @Override
