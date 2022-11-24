@@ -69,7 +69,23 @@ public class DepartamentosDaoJDBC implements DepartamentosDao {
 
     @Override
     public void deletar(Departamentos obj) {
-
+        PreparedStatement ps = null;
+        try{
+            ps = conexao.prepareStatement(
+                    "delete from Departamentos "
+                            +"where "
+                            +"Id = ? ");
+            ps.setInt(1, obj.getId());
+            int linha = ps.executeUpdate();
+            System.out.println("Total de linhas alterada(s): " + linha);
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexao();
+        }
     }
 
     @Override

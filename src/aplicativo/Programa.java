@@ -16,10 +16,17 @@ public class Programa {
         depDao.inserir(dep);
         System.out.println(dep);*/
 
-        System.out.println("\nTESTE 2: ATUALIZAR DEPARTAMENTOS");
+      /*  System.out.println("\nTESTE 2: ATUALIZAR DEPARTAMENTOS");
         DepartamentosDao depDao = FabricaDao.criarDepartamentoDao();
         Departamentos dep = new Departamentos(4, "Acessórios");
         depDao.atualizar(dep);
+        System.out.println(dep);*/
+
+        System.out.println("\nTESTE 3: DELETAR DEPARTAMENTOS");
+        DepartamentosDao depDao = FabricaDao.criarDepartamentoDao();
+        Departamentos dep = new Departamentos();
+        dep.setId(4);
+        depDao.deletar(dep);
         System.out.println(dep);
     }
 }
