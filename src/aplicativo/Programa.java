@@ -10,10 +10,16 @@ import java.sql.Connection;
 public class Programa {
     public static void main(String[] args) {
 
-        System.out.println("TESTE 1: INSERIR DEPARTAMENTOS");
+       /* System.out.println("TESTE 1: INSERIR DEPARTAMENTOS");
         DepartamentosDao depDao = FabricaDao.criarDepartamentoDao();
-        Departamentos dep = new Departamentos(2, "Vestuarios");
+        Departamentos dep = new Departamentos(4, "Acessorios");
         depDao.inserir(dep);
+        System.out.println(dep);*/
+
+        System.out.println("\nTESTE 2: ATUALIZAR DEPARTAMENTOS");
+        DepartamentosDao depDao = FabricaDao.criarDepartamentoDao();
+        Departamentos dep = new Departamentos(4, "Acessórios");
+        depDao.atualizar(dep);
         System.out.println(dep);
     }
 }

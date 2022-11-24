@@ -46,6 +46,25 @@ public class DepartamentosDaoJDBC implements DepartamentosDao {
     @Override
     public void atualizar(Departamentos obj) {
 
+        PreparedStatement ps = null;
+
+        try{
+            ps = conexao.prepareStatement(
+                    "update Departamentos "
+                            +"set Setor = ? "
+                            +"where Id = ? ");
+            ps.setString(1, obj.getSetor());
+            ps.setInt(2, obj.getId());
+            int linha = ps.executeUpdate();
+            System.out.println("Total de linhas alterada(s): " + linha);
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexao();
+        }
     }
 
     @Override
