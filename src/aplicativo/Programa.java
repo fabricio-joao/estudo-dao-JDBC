@@ -62,11 +62,16 @@ public class Programa {
         vdao.atualizar(vendedores);
         System.out.println(vendedores);*/
 
-        System.out.println("TESTE 7: DELETAR VENDEDORES");
+        /*System.out.println("TESTE 8: DELETAR VENDEDORES");
         VendedoresDao vdao = FabricaDao.criarVendedoresDao();
         Vendedores vendedores = new Vendedores();
         vendedores.setId(7);
         vdao.deletar(vendedores);
+        System.out.println(vendedores);*/
+
+        System.out.println("TESTE 9: PROCURAR VENDEDORES POR ID");
+        VendedoresDao vdao = FabricaDao.criarVendedoresDao();
+        Vendedores vendedores = vdao.procuraPorId(6);
         System.out.println(vendedores);
     }
 }
