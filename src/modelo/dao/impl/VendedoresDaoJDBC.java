@@ -13,7 +13,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class VendedoresDaoJDBC implements VendedoresDao {
 
@@ -112,7 +115,7 @@ public class VendedoresDaoJDBC implements VendedoresDao {
                               +"WHERE Vendedores.id = ? ");
               ps.setInt(1, id);
               rs = ps.executeQuery();
-              while (rs.next()){
+              if(rs.next()){
                   Departamentos dep = new Departamentos();
                   dep.setId(rs.getInt("DepartamentoId"));
                   dep.setSetor(rs.getString("DepSetor"));
@@ -145,6 +148,48 @@ public class VendedoresDaoJDBC implements VendedoresDao {
 
     @Override
     public List<Vendedores> procurarDepartamentosPorId(Departamentos departamentos) {
-        return null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            ps = conexao.prepareStatement(
+                    "select Vendedores.*,Departamentos.Setor as DepSetor "
+                            +"from Vendedores INNER JOIN Departamentos "
+                            +"on Vendedores.DepartamentoId = Departamentos.Id "
+                            +"where DepartamentoId = ? "
+                            +"ORDER BY Nome ");
+            ps.setInt(1, departamentos.getId());
+            rs = ps.executeQuery();
+
+            List<Vendedores> lista = new ArrayList<>();
+            Map<Integer, Departamentos> map = new HashMap<>();
+            while (rs.next()){
+                Departamentos dep = map.get(rs.getInt("DepartamentoId"));
+                if(dep == null){
+                    dep = new Departamentos();
+                    dep.setId(rs.getInt("DepartamentoId"));
+                    dep.setSetor(rs.getString("DepSetor"));
+                    map.put(rs.getInt("DepartamentoId"), dep);
+                }
+
+                Vendedores obj = new Vendedores();
+                obj.setId(rs.getInt("id"));
+                obj.setNome(rs.getString("Nome"));
+                obj.setEmail(rs.getString("Email"));
+                obj.setNascimento(rs.getDate("Nascimento"));
+                obj.setSalario(rs.getDouble("Salario"));
+                obj.setDepartamentos(dep);
+                lista.add(obj);
+            }
+            return lista;
+        }
+        catch (SQLException e){
+            throw new BdExcecao(e.getMessage());
+        }
+        finally {
+            BdConexaoJDBC.fecharConexaoStatement(ps);
+            BdConexaoJDBC.fecharConexaoResultSet(rs);
+            BdConexaoJDBC.fecharConexao();
+        }
+
     }
 }
